@@ -17,7 +17,6 @@ class DataLoader:
 
         print("[INFO] loading images...")
         imagePaths = list(paths.list_images(self.config["dataset"]))
-        print(imagePaths)
 
         for imagePath in imagePaths:
             # 파일 이름에서 클래스 레이블을 추출하고 이미지를 로드한 다음, 32x32 크기 조정  
