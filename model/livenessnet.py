@@ -21,8 +21,7 @@ class LivenessNet:
             inputShape = (depth, height, width)
             chanDim = 1
 
-        model.add(Conv2D(16, (3, 3), padding="same"),
-                  input_shape=inputShape)
+        model.add(Conv2D(16, (3, 3), padding="same", input_shape=inputShape))
         model.add(Activation("relu"))
         model.add(BatchNormalization(axis=chanDim))
         model.add(Conv2D(16, (3, 3), padding="same"))
