@@ -11,14 +11,19 @@ from keras import backend as K
 
 class LivenessNet:
 
-    @staticmethod
-    def build(width, height, depth, classes):
+    def __init__(self, width=32, height=32, depth=3, classes=2):
+        self.width = width
+        self.height = height
+        self.depth = depth
+        self.classes = classes
+
+    def build(self):
         model = Sequential()
-        inputShape = (height, width, depth)
+        inputShape = (self.height, self.width, self.depth)
         chanDim = -1
 
         if K.image_data_format() == "channel_first":
-            inputShape = (depth, height, width)
+            inputShape = (self.depth, self.height, self.width)
             chanDim = 1
 
         model.add(Conv2D(16, (3, 3), padding="same", input_shape=inputShape))
@@ -45,7 +50,7 @@ class LivenessNet:
         model.add(BatchNormalization())
         model.add(Dropout(0.5))
 
-        model.add(Dense(classes))
+        model.add(Dense(self.classes))
         model.add(Activation("softmax"))
 
         return model
