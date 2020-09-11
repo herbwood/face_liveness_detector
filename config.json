@@ -1,3 +1,4 @@
 {"dataset" : "/home/herbwood/Project/liveness_detector/dataset",
 "saved_model" :  "/home/herbwood/Project/liveness_detector/config/liveness.model",
-"saved_le" :  "/home/herbwood/Project/liveness_detector/config/le.pickle"}
+"saved_le" :  "/home/herbwood/Project/liveness_detector/config/le.pickle",
+"face_verification" :  "/home/herbwood/Project/liveness_detector/image"}
