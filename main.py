@@ -2,11 +2,24 @@ import face_recognition as fr
 import cv2
 import numpy as np
 from face_verification.face_verification import FaceVerification
+from keras.preprocessing.image import img_to_array
+from keras.models import load_model
+from utils.utils import configInfo
+import pickle
+
 
 def main():
+#############################################################
+    config = configInfo("config.json")
+    model = load_model(config["saved_model"])
+    le = pickle.loads(open(config["saved_le"], "rb").read())
+#############################################################
+
     fv = FaceVerification("config.json")
     known_face_encodings, known_face_names, face_locations, face_encodings, face_names, process_this_frame = fv.face_information()
     video_capture = cv2.VideoCapture(0)
+
+
 
     while True:
         ret, frame = video_capture.read()
@@ -44,11 +57,31 @@ def main():
             bottom *= 4
             left *= 4
 
-            cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+###############################################
+            face = frame[top:bottom, left:right]
+            # cv2.imwrite("test.jpg", face)
+            face = cv2.resize(face, (32, 32))
+            face = face.astype("float") / 255.0
+            face = img_to_array(face)
+            face = np.expand_dims(face, axis=0)
 
-            cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
+            preds = model.predict(face)[0]
+            j = np.argmax(preds)
+            label = le.classes_[j]
+            # print(label)
+###############################################
+
+            if name != "Unknown" and label != "fake":
+                rectcolor = (0, 255, 0)
+            else:
+                rectcolor = (0, 0, 255)
+            cv2.rectangle(frame, (left, top), (right, bottom), rectcolor, 2)
+
+            cv2.rectangle(frame, (left, bottom - 35), (right, bottom), rectcolor, cv2.FILLED)
             font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+
+
+            cv2.putText(frame, f"{name}/{label}", (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
         cv2.imshow('Video', frame)
 
