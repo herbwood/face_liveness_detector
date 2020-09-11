@@ -1,1 +1,3 @@
-{"dataset" : "/home/herbwood/Project/liveness_detector/dataset"}
+{"dataset" : "/home/herbwood/Project/liveness_detector/dataset",
+"saved_model" :  "/home/herbwood/Project/liveness_detector/config/liveness.model",
+"saved_le" :  "/home/herbwood/Project/liveness_detector/config/le.pickle"}
