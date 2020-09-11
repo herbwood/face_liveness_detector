@@ -6,12 +6,13 @@ import cv2
 import numpy as np
 from utils.utils import configInfo
 import os
+import pickle
 
 
 class DataLoader:
     def __init__(self, config="../config.json"):
         self.config = configInfo(config)
-        print(self.config)
+        self.saved_le = self.config["saved_le"]
         self.data = []
         self.labels = []
 
@@ -32,6 +33,11 @@ class DataLoader:
         le = LabelEncoder()
         self.labels = le.fit_transform(self.labels)
         self.labels = np_utils.to_categorical(self.labels, 2)
+        self.leclasses = le.classes_
+
+        f = open(self.saved_le, 'wb')
+        f.write(pickle.dumps(le))
+        f.close()
 
 
     def split(self, test_size=0.25):
@@ -40,6 +46,4 @@ class DataLoader:
 
 if __name__ == "__main__":
     dl = DataLoader()
-    print(dl.data)
-    trainX, testX, trainY, testY = dl.split()
-    print(trainX)
+    print(dl.leclasses)
