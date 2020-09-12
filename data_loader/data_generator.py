@@ -1,49 +1,42 @@
-from imutils import paths
-from sklearn.preprocessing import LabelEncoder
-from sklearn.model_selection import train_test_split
-from keras.utils import np_utils
-import cv2
-import numpy as np
+import tensorflow as tf
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from utils.utils import configInfo
-import os
-import pickle
-
 
 class DataLoader:
-    def __init__(self, config="../config.json"):
+
+    def __init__(self, config, batch_size=8, target_size=(32, 32)):
         self.config = configInfo(config)
-        self.saved_le = self.config["saved_le"]
-        self.data = []
-        self.labels = []
+        self.batch_size = batch_size
+        self.target_size = target_size
+        train_dir = self.config["train_dir"]
+        validation_dir = self.config["validation_dir"]
 
-        print("[INFO] loading images...")
-        imagePaths = list(paths.list_images(self.config["dataset"]))
+        self.train_datagen = ImageDataGenerator(rescale=1 / 255,
+                                           rotation_range=20,
+                                           width_shift_range=0.2,
+                                           height_shift_range=0.2,
+                                           shear_range=0.15,
+                                           zoom_range=0.15,
+                                           horizontal_flip=True,
+                                           fill_mode='nearest')
 
-        for imagePath in imagePaths:
-            # 파일 이름에서 클래스 레이블을 추출하고 이미지를 로드한 다음, 32x32 크기 조정  
-            label = imagePath.split(os.path.sep)[-2]
-            image = cv2.imread(imagePath)
-            image = cv2.resize(image, (32, 32))
+        self.validation_datagen = ImageDataGenerator(rescale=1 / 255)
 
-            # 데이터 및 라벨 목록을 각각 업데이트
-            self.data.append(image)
-            self.labels.append(label)
+        self.train_generator = self.train_datagen.flow_from_directory(train_dir,
+                                                            batch_size=self.batch_size,
+                                                            target_size=self.target_size,
+                                                            class_mode='binary')
 
-        self.data = np.array(self.data, dtype="float") / 255.0
-        le = LabelEncoder()
-        self.labels = le.fit_transform(self.labels)
-        self.labels = np_utils.to_categorical(self.labels, 2)
-        self.leclasses = le.classes_
-
-        f = open(self.saved_le, 'wb')
-        f.write(pickle.dumps(le))
-        f.close()
+        self.validation_generator = self.validation_datagen.flow_from_directory(validation_dir,
+                                                                      batch_size=self.batch_size,
+                                                                      target_size=self.target_size,
+                                                                      class_mode='binary')
 
 
-    def split(self, test_size=0.25):
-        (trainX, testX, trainY, testY) = train_test_split(self.data, self.labels, test_size=test_size, random_state=42)
-        return trainX, testX, trainY, testY
+    def data_generator(self):
+        return self.train_generator, self.validation_generator
 
 if __name__ == "__main__":
-    dl = DataLoader()
-    print(dl.leclasses)
+    dl = DataLoader(config="../config.json")
+    train_generator, validation_generator = dl.data_generator()
+    print(train_generator, validation_generator)
