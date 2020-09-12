@@ -18,10 +18,11 @@ class FaceVerification:
         image_path = self.config["face_verification"]
 
         for image in os.listdir(image_path):
+            name = os.path.splitext(os.path.basename(os.path.join(image_path, image)))[0]
             loaded_image = fr.load_image_file(os.path.join(image_path, image))
             loaded_face_encodings = fr.face_encodings(loaded_image)[0]
             known_face_encodings.append(loaded_face_encodings)
-            known_face_names.append(image)
+            known_face_names.append(name)
 
         return known_face_encodings, known_face_names, face_locations, face_encodings, face_names, process_this_frame
 
