@@ -1,1 +1,1 @@
-from .data_generator import *
+from .data_loader import *

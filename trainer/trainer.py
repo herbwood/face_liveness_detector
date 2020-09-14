@@ -1,5 +1,5 @@
 import tensorflow as tf
-from data_loader.data_generator import DataLoader
+from data_loader.data_loader import DataLoader
 from utils.utils import configInfo, visualization
 from model.livenessnet import LivenessNet
 
