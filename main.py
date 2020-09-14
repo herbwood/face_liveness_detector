@@ -35,7 +35,7 @@ def main():
             face_names = []
             for face_encoding in face_encodings:
                 matches = fr.compare_faces(known_face_encodings,
-                                           face_encoding)  # Compare a list of face encodings against a candidate encoding to see if they match.
+                                           face_encoding, tolerance=0.5)  # Compare a list of face encodings against a candidate encoding to see if they match.
                 # tolerance: How much distance between faces to consider it a match. Lower is more strict. 0.6 is typical best performance.
                 name = "Unknown"
 
