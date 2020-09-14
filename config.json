@@ -3,4 +3,9 @@
 "saved_model" : "/home/herbwood/Project/liveness_detector/config/liveness",
 "face_verification" :  "/home/herbwood/Project/liveness_detector/image",
 "le" : {"num_classes" :  2,
-        "classes" :  ["fake", "real"]}}
+        "classes" :  ["fake", "real"]},
+"data_gatherer" :  {"sl" :  ["S001", "S002"],
+                    "ll" : ["L1", "L2", "L3", "L8", "L9", "L12", "L22", "L23"],
+                    "el" : ["E01", "E02"],
+                    "cl" : ["C4.jpg", "C5.jpg", "C6.jpg", "C7.jpg", "C8.jpg", "C9.jpg", "C10.jpg", "C19.jpg", "C20.jpg"]}
+}
