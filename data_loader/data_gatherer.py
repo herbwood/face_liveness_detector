@@ -4,6 +4,12 @@ import glob
 import zipfile
 from utils.utils import configInfo
 
+# 400명 인당 100
+# sl : 악세서리 착용 여부(s1, 2)
+# ll : 조도(l1, 2, 3, 8, 9)
+# el : 표정(e1, 2)
+# cl : 포즈 방향(c4, 7, 10, 19, 20)장
+
 def sampleTrainDataset(config, basepath='temp', targetpath='whole'):
     # sl, ll, el, cl을 조합하여 우리가 추출할 이미지 데이터 path를 지정해줌
     config = configInfo(config)
