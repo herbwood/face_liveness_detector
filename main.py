@@ -60,13 +60,14 @@ def main():
 ###############################################
             face = frame[top:bottom, left:right]
             # cv2.imwrite("test.jpg", face)
-            face = cv2.resize(face, (32, 32))
-            face = face.astype("float") / 255.0
+            face = cv2.resize(face, (64, 64))
+            # face = face.astype("float") / 255.0
             face = img_to_array(face)
             face = np.expand_dims(face, axis=0)
 
             preds = model.predict(face)[0]
             j = np.argmax(preds)
+            print(preds, j, le[j])
             # label = le.classes_[j]
             # print(label)
             label = le[j]
