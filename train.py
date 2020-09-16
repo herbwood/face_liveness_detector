@@ -5,7 +5,7 @@ from trainer.trainer import Trainer
 
 def main():
     dataloader = DataLoader(config="config.json")
-    model = LivenessNet().build()
+    model = LivenessNet(config="config.json").build()
     trainer = Trainer(dataloader, model, config="config.json")
     history = trainer.train()
     visualization(history)
