@@ -1,5 +1,4 @@
 .idea
 *.pyc
-dataset/**/*.jpg
 /image
 
