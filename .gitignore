@@ -1,6 +1,7 @@
 .idea
 *.pyc
-/image
 dataset/*
 !dataset/.gitkeep
+image/*
+!image/.gitkeep
 
