@@ -12,7 +12,6 @@ def main():
 #############################################################
     config = configInfo("config.json")
     model = load_model(config["saved_model"])
-    # le = pickle.loads(open(config["saved_le"], "rb").read())
     le = config["le"]["classes"]
 #############################################################
 
@@ -35,7 +34,7 @@ def main():
             face_names = []
             for face_encoding in face_encodings:
                 matches = fr.compare_faces(known_face_encodings,
-                                           face_encoding, tolerance=0.5)  # Compare a list of face encodings against a candidate encoding to see if they match.
+                                           face_encoding, tolerance=0.45)  # Compare a list of face encodings against a candidate encoding to see if they match.
                 # tolerance: How much distance between faces to consider it a match. Lower is more strict. 0.6 is typical best performance.
                 name = "Unknown"
 
@@ -67,9 +66,7 @@ def main():
 
             preds = model.predict(face)[0]
             j = np.argmax(preds)
-            print(preds, j, le[j])
-            # label = le.classes_[j]
-            # print(label)
+            print(preds, name, le[j])
             label = le[j]
 ###############################################
 
