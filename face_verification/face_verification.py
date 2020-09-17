@@ -19,6 +19,8 @@ class FaceVerification:
 
         for image in os.listdir(image_path):
             name = os.path.splitext(os.path.basename(os.path.join(image_path, image)))[0]
+            if name == ".gitkeep":
+                continue
             loaded_image = fr.load_image_file(os.path.join(image_path, image))
             loaded_face_encodings = fr.face_encodings(loaded_image)[0]
             known_face_encodings.append(loaded_face_encodings)
