@@ -13,5 +13,5 @@ pip install -r requirements.txt
 ### Step 3. main 파일 실행
 
 ```python
-main.py
+python main.py
 ```
