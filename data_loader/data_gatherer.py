@@ -1,8 +1,5 @@
 import os
 import shutil
-import glob
-import zipfile
-from utils.utils import configInfo
 
 # 400명 인당 100
 # sl : 악세서리 착용 여부(s1, 2)
@@ -76,10 +73,3 @@ def copy_images_to_dir(imagepathlist, target_dir):
     for imagepath in imagepathlist:
         filename = os.path.basename(imagepath)
         shutil.copy(imagepath, os.path.join(target_dir, filename))
-
-
-# if __name__ == "__main__":
-#     config = configInfo("../config.json")
-    # metadata = config["data_gatherer"]
-    # sl, ll, el, cl = metadata["sl"], metadata["ll"], metadata["el"], metadata["cl"]
-    # print(sl, ll, el, cl)
