@@ -4,7 +4,7 @@ from utils.utils import configInfo
 
 class DataLoader:
 
-    def __init__(self, config, batch_size=32, target_size=(64, 64)):
+    def __init__(self, config, batch_size=32, target_size=(128, 128)):
         self.config = configInfo(config)
         self.batch_size = batch_size
         self.target_size = target_size
@@ -44,8 +44,3 @@ class DataLoader:
 
     def data_generator(self):
         return self.train_generator, self.validation_generator
-
-if __name__ == "__main__":
-    dl = DataLoader(config="../config.json")
-    train_generator, validation_generator = dl.data_generator()
-    print(dl.labels)
