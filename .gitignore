@@ -5,3 +5,4 @@ dataset/*
 image/*
 !image/.gitkeep
 *.ipynb_checkpoints/
+*.jpg
