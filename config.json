@@ -1,7 +1,7 @@
-{"train_dir" : "/home/herbwood/Project/liveness_detector/dataset/face_liveness_train",
-"validation_dir" : "/home/herbwood/Project/liveness_detector/dataset/face_liveness_validation",
-"saved_model" : "/home/herbwood/Project/liveness_detector/config/best/liveness_model.h5",
-"face_verification" :  "/home/herbwood/Project/liveness_detector/image",
+{"train_dir" : "dataset/face_liveness_train",
+"validation_dir" : "dataset/face_liveness_validation",
+"saved_model" : "config/best/liveness_model.h5",
+"face_verification" :  "image",
 "le" : {"num_classes" :  2,
         "classes" :  ["real", "fake"]}
 }
