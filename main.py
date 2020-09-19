@@ -11,7 +11,9 @@ from tensorflow.keras.models import load_model
 def main():
 #############################################################
     config = configInfo("config.json")
-    model = load_model(config["saved_model"])
+    hyperparameters = config["hyperparameters"]
+    width, height, _ = hyperparameters["size"]
+    model = load_model(config["best_saved_model"])
     le = config["le"]["classes"]
 #############################################################
 
@@ -58,8 +60,8 @@ def main():
 
 ###############################################
             face = frame[top:bottom, left:right]
-            # cv2.imwrite("test.jpg", face)
-            face = cv2.resize(face, (64, 64))
+            face = cv2.resize(face, (width, height))
+            cv2.imwrite("test.jpg", face)
             # face = face.astype("float") / 255.0
             face = img_to_array(face)
             face = np.expand_dims(face, axis=0)
