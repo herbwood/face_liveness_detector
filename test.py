@@ -6,7 +6,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 
 def test(dataloader, config="config.json"):
     config = configInfo(config)
-    model = tf.keras.models.load_model(config["saved_model"])
+    model = tf.keras.models.load_model(config["best_saved_model"])
 
     _, validation_generator = dataloader.data_generator()
     batch_size = dataloader.batch_size
