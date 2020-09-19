@@ -4,7 +4,7 @@ from model.livenessnet import LivenessNet
 from trainer.trainer import Trainer
 from model.trialnet import TrialNet
 
-def main():
+def train():
     dataloader = DataLoader(config="config.json")
     model = TrialNet(config="config.json").build()
     trainer = Trainer(dataloader, model, config="config.json")
@@ -12,4 +12,4 @@ def main():
     visualization(history)
 
 if __name__ == "__main__":
-    main()
+    train()
