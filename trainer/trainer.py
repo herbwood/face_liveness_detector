@@ -6,14 +6,15 @@ from model.trialnet import TrialNet
 
 class Trainer:
 
-    def __init__(self, dataloader, model, config, batch_size=32, epochs=10):
+    def __init__(self, dataloader, model, config):
 
         self.dataloader = dataloader
         self.model = model
         self.config = configInfo(config)
-        self.batch_size = batch_size
-        self.epochs = epochs
-        self.INIT_LR = (1e-5)/4
+        self.hyperparameters = self.config["hyperparameters"]
+        self.batch_size = self.hyperparameters["batch_size"]
+        self.epochs = self.hyperparameters["epochs"]
+        self.INIT_LR = self.hyperparameters["learning_rate"]
         self.optimizer = tf.keras.optimizers.Adam(lr=self.INIT_LR, decay=self.INIT_LR/self.epochs)
 
         self.train_generator, self.validation_generator = self.dataloader.data_generator()
@@ -35,6 +36,12 @@ class Trainer:
                                  callbacks=[early_stopping])
         #, steps_per_epoch=len(self.train_generator) / self.epochs
 
-        self.model.save(self.config["saved_model"])
+        self.model.save(self.config["trial_saved_model"])
 
         return history
+
+if __name__ == "__main__":
+    dl = DataLoader("../config.json")
+    model = LivenessNet("../config.json").build()
+    trainer = Trainer(dl, model, config="../config.json")
+    history = trainer.train()
