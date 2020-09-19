@@ -4,25 +4,20 @@ from utils.utils import configInfo
 
 class DataLoader:
 
-    def __init__(self, config, batch_size=32, target_size=(128, 128)):
+    def __init__(self, config):
         self.config = configInfo(config)
-        self.batch_size = batch_size
-        self.target_size = target_size
+        self.hyperparameters = self.config["hyperparameters"]
+        self.width, self.height, self.channel = self.hyperparameters["size"]
+        self.batch_size = self.hyperparameters["batch_size"]
+        self.target_size = (self.width, self.height)
         train_dir = self.config["train_dir"]
         validation_dir = self.config["validation_dir"]
+        # train_dir = "../dataset/face_liveness_train"
+        # validation_dir = "../dataset/face_liveness_validation"
 
         self.train_datagen = ImageDataGenerator()
-        # rescale = 1 / 255,
-        # rotation_range = 20,
-        # width_shift_range = 0.2,
-        # height_shift_range = 0.2,
-        # shear_range = 0.15,
-        # zoom_range = 0.15,
-        # horizontal_flip = True,
-        # fill_mode = 'nearest'
 
         self.validation_datagen = ImageDataGenerator()
-        # rescale = 1 / 255
 
         self.train_generator = self.train_datagen.flow_from_directory(train_dir,
                                                             batch_size=self.batch_size,
@@ -44,3 +39,7 @@ class DataLoader:
 
     def data_generator(self):
         return self.train_generator, self.validation_generator
+
+if __name__ == "__main__":
+    dl = DataLoader("../config.json")
+    print(dl.data_generator())
