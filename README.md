@@ -1,5 +1,7 @@
 # Face Liveness Detector
 
+<p align="center"><img src="https://ifh.cc/g/mt2YYb.jpg" width="600"></p>
+
 ## Build and run
 
 ### Step 1. 원격 저장소 git clone
