@@ -6,6 +6,8 @@ from tensorflow.keras.preprocessing.image import img_to_array
 from utils.utils import configInfo
 import tensorflow as tf
 from tensorflow.keras.models import load_model
+from datetime import datetime
+import os
 
 
 def main():
@@ -13,6 +15,7 @@ def main():
     config = configInfo("config.json")
     hyperparameters = config["hyperparameters"]
     width, height, _ = hyperparameters["size"]
+    print(width, height)
     model = load_model(config["best_saved_model"])
     le = config["le"]["classes"]
 #############################################################
@@ -21,6 +24,11 @@ def main():
     known_face_encodings, known_face_names, face_locations, face_encodings, face_names, process_this_frame = fv.face_information()
 
     video_capture = cv2.VideoCapture(0)
+
+    # save test images per frame
+    now = datetime.now().strftime("%H_%M_%S")
+    os.mkdir(os.path.join("image", "frame", now))
+    i = 0
 
     while True:
         ret, frame = video_capture.read()
@@ -81,11 +89,14 @@ def main():
             cv2.rectangle(frame, (left, bottom - 35), (right, bottom), rectcolor, cv2.FILLED)
             font = cv2.FONT_HERSHEY_DUPLEX
             cv2.putText(frame, f"{name}/{label}", (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+            # cv2.imwrite(f"image/frame/{now}/test_{i}_{name}_{label}_{max(preds)}.jpg", frame)
 
         cv2.imshow('Video', frame)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+        else:
+            i += 1
 
     video_capture.release()
     cv2.destroyAllWindows()
