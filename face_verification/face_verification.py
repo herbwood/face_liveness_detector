@@ -18,6 +18,8 @@ class FaceVerification:
         image_path = self.config["face_verification"]
 
         for image in os.listdir(image_path):
+            if image == "frame":
+                continue
             name = os.path.splitext(os.path.basename(os.path.join(image_path, image)))[0]
             if name == ".gitkeep":
                 continue
