@@ -1,5 +1,7 @@
 import json
 import matplotlib.pyplot as plt
+import tensorflow as tf
+import os
 
 def configInfo(file):
     with open(file, 'r', encoding='utf-8') as f:
@@ -27,3 +29,13 @@ def visualization(history):
     # plt.figure()
 
     plt.show()
+
+
+def convert_to_tflite(h5_model, export_path, save_dir, filename):
+    model = tf.keras.models.load_model(h5_model, compile=False)
+    model.save(export_path, save_format="tf")
+
+    converter = tf.lite.TFLiteConverter.from_saved_model(export_path)
+    converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS, tf.lite.OpsSet.SELECT_TF_OPS]
+    tflite_model = converter.convert()
+    open(os.path.join(save_dir, filename), "wb").write(tflite_model)
