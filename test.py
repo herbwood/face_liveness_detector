@@ -4,7 +4,7 @@ from data_loader.data_loader import DataLoader
 import numpy as np
 from sklearn.metrics import classification_report, confusion_matrix
 
-def test(dataloader, config="config.json"):
+def test(dataloader, config="config/config.json"):
     config = configInfo(config)
     model = tf.keras.models.load_model(config["best_saved_model"])
 
@@ -19,5 +19,5 @@ def test(dataloader, config="config.json"):
     print(classification_report(validation_generator.classes, y_pred))
 
 if __name__ == "__main__":
-    dataloader = DataLoader(config="config.json")
+    dataloader = DataLoader(config="config/config.json")
     test(dataloader)

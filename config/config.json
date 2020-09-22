@@ -1,0 +1,15 @@
+{"train_dir" : "dataset/face_liveness_train",
+"validation_dir" : "dataset/face_liveness_validation",
+"best_saved_model" : "model/saved/best/liveness_model_best.h5",
+"trial_saved_model" : "model/saved/liveness_model.h5",
+"test_saved_model" : "model/saved/liveness_model_downloaded.h5",
+"face_verification" :  "image",
+"le" : {"num_classes" :  2,
+        "classes" :  ["real", "fake"]},
+"hyperparameters" : {"size" :  [64, 64, 3],
+                     "batch_size" : 32,
+                     "epochs" : 20,
+                     "learning_rate" : 1e-5
+
+}
+}
