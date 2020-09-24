@@ -1,6 +1,6 @@
 # Face Liveness Detector
 
-<p align="center"><img src="https://ifh.cc/g/mt2YYb.jpg" width="600"></p>
+<p align="center"><img src="https://ifh.cc/g/4BAKxu.jpg" width="600"></p>
 
 ## Build and run
 
