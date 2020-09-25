@@ -10,6 +10,15 @@
                      "batch_size" : 32,
                      "epochs" : 20,
                      "learning_rate" : 1e-5
-
-}
+},
+  "firebase_config" : {
+    "apiKey": "",
+    "authDomain": "",
+    "databaseURL": "",
+    "projectId": "",
+    "storageBucket": "",
+    "messagingSenderId": "",
+    "appId": ""
+},
+  "video_save_path" :  "./video"
 }
