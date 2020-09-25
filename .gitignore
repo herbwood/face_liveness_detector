@@ -6,3 +6,5 @@ image/*
 !image/.gitkeep
 *.ipynb_checkpoints/
 *.jpg
+video/*
+!video/.gitkeep
