@@ -15,7 +15,6 @@ def main():
     config = configInfo("config/config.json")
     hyperparameters = config["hyperparameters"]
     width, height, _ = hyperparameters["size"]
-    print(width, height)
     model = load_model(config["best_saved_model"])
     le = config["le"]["classes"]
 #############################################################
@@ -23,7 +22,7 @@ def main():
     fv = FaceVerification("config/config.json")
     known_face_encodings, known_face_names, face_locations, face_encodings, face_names, process_this_frame = fv.face_information()
 
-    video_capture = cv2.VideoCapture(0)
+    video_capture = cv2.VideoCapture(config["video2read"])
 
     # save test images per frame
     now = datetime.now().strftime("%H_%M_%S")

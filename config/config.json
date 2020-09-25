@@ -20,5 +20,6 @@
     "messagingSenderId": "",
     "appId": ""
 },
-  "video_save_path" :  "./video"
+  "video_save_path" :  "./video",
+  "video2read" : 0
 }
