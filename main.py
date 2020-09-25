@@ -60,6 +60,7 @@ def main():
 
         process_this_frame = not process_this_frame
 
+
         for (top, right, bottom, left), name in zip(face_locations, face_names):
             top *= 4
             right *= 4
@@ -85,11 +86,12 @@ def main():
             else:
                 rectcolor = (0, 0, 255)
 
+
             cv2.rectangle(frame, (left, top), (right, bottom), rectcolor, 2)
             cv2.rectangle(frame, (left, bottom - 35), (right, bottom), rectcolor, cv2.FILLED)
             font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(frame, f"{name}/{label}", (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-            # cv2.imwrite(f"image/frame/{now}/test_{i}_{name}_{label}_{max(preds)}.jpg", frame)
+            cv2.putText(frame, f"{name}/{label}", (left + 6, bottom - 6), font, 1.0, (0, 0, 0), 1)
+            cv2.imwrite(f"image/frame/{now}/test_{i}_{name}_{label}_{max(preds)}.jpg", frame)
 
         cv2.imshow('Video', frame)
 
