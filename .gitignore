@@ -8,3 +8,4 @@ image/*
 *.jpg
 video/*
 !video/.gitkeep
+*.log
