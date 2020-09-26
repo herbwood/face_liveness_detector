@@ -4,6 +4,7 @@ import numpy as np
 from face_verification.face_verification import FaceVerification
 from tensorflow.keras.preprocessing.image import img_to_array
 from utils.utils import configInfo
+from utils.logger import resultLogger
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 from datetime import datetime
@@ -17,6 +18,7 @@ def main():
     width, height, _ = hyperparameters["size"]
     model = load_model(config["best_saved_model"])
     le = config["le"]["classes"]
+    logger = resultLogger(config["logpath"])
 #############################################################
 
     fv = FaceVerification("config/config.json")
@@ -69,14 +71,13 @@ def main():
 ###############################################
             face = frame[top:bottom, left:right]
             face = cv2.resize(face, (width, height))
-            cv2.imwrite("test.jpg", face)
+            # cv2.imwrite("test.jpg", face)
             # face = face.astype("float") / 255.0
             face = img_to_array(face)
             face = np.expand_dims(face, axis=0)
 
             preds = model.predict(face)[0]
             j = np.argmax(preds)
-            print(preds, name, le[j])
             label = le[j]
 ###############################################
 
@@ -91,6 +92,7 @@ def main():
             font = cv2.FONT_HERSHEY_DUPLEX
             cv2.putText(frame, f"{name}/{label}", (left + 6, bottom - 6), font, 1.0, (0, 0, 0), 1)
             cv2.imwrite(f"image/frame/{now}/test_{i}_{name}_{label}_{max(preds)}.jpg", frame)
+            logger.info(f"{name} {label} {max(preds)}")
 
         cv2.imshow('Video', frame)
 
@@ -101,6 +103,7 @@ def main():
 
     video_capture.release()
     cv2.destroyAllWindows()
+    f.close()
 
 if __name__ == "__main__":
     main()

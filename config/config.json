@@ -21,5 +21,6 @@
     "appId": ""
 },
   "video_save_path" :  "./video",
-  "video2read" : 0
+  "video2read" : "video/video4.mp4",
+  "logpath" : "config/logs.log"
 }
