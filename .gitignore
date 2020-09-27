@@ -9,3 +9,4 @@ image/*
 video/*
 !video/.gitkeep
 *.log
+note.py
