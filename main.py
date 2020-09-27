@@ -18,7 +18,6 @@ def main():
     width, height, _ = hyperparameters["size"]
     model = load_model(config["best_saved_model"])
     le = config["le"]["classes"]
-    logger = resultLogger(config["logpath"])
 #############################################################
 
     fv = FaceVerification("config/config.json")
@@ -29,10 +28,14 @@ def main():
     # save test images per frame
     now = datetime.now().strftime("%H_%M_%S")
     os.mkdir(os.path.join("image", "frame", now))
+    logger = resultLogger(os.path.join(config["logpath"], ("logs_" + now)) + ".log")
     i = 0
 
     while True:
         ret, frame = video_capture.read()
+        if ret == False:
+            break
+
         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
         rgb_small_frame = small_frame[:, :, ::-1]  # BGR을 RGB로 변환
 
@@ -70,6 +73,7 @@ def main():
 
 ###############################################
             face = frame[top:bottom, left:right]
+            size = face.shape
             face = cv2.resize(face, (width, height))
             # cv2.imwrite("test.jpg", face)
             # face = face.astype("float") / 255.0
@@ -92,10 +96,9 @@ def main():
             font = cv2.FONT_HERSHEY_DUPLEX
             cv2.putText(frame, f"{name}/{label}", (left + 6, bottom - 6), font, 1.0, (0, 0, 0), 1)
             cv2.imwrite(f"image/frame/{now}/test_{i}_{name}_{label}_{max(preds)}.jpg", frame)
-            logger.info(f"{name} {label} {max(preds)}")
+            logger.info(f"{name} {label} {max(preds)} {size[0]} {size[1]} {size[2]}")
 
         cv2.imshow('Video', frame)
-
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
         else:
@@ -103,7 +106,6 @@ def main():
 
     video_capture.release()
     cv2.destroyAllWindows()
-    f.close()
 
 if __name__ == "__main__":
     main()
