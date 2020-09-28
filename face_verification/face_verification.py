@@ -24,9 +24,12 @@ class FaceVerification:
                 name = os.path.splitext(os.path.basename(os.path.join(image_path, dir, image)))[0]
 
                 loaded_image = fr.load_image_file(os.path.join(image_path, dir, image))
-                loaded_face_encodings = fr.face_encodings(loaded_image)[0]
-                known_face_encodings.append(loaded_face_encodings)
-                known_face_names.append(dir)
+                try:
+                    loaded_face_encodings = fr.face_encodings(loaded_image)[0]
+                    known_face_encodings.append(loaded_face_encodings)
+                    known_face_names.append(dir)
+                except:
+                    continue
 
         return known_face_encodings, known_face_names, face_locations, face_encodings, face_names, process_this_frame
 
