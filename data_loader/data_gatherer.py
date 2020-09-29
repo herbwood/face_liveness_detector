@@ -4,7 +4,7 @@ import cv2
 from utils.utils import configInfo
 import os
 
-def gather_example(config, saved_video_path, image_save_path):
+def gather_example(config, saved_video_path, image_save_path, skip=10):
     config = configInfo(config)
 
     video_capture = cv2.VideoCapture(saved_video_path)
@@ -37,7 +37,7 @@ def gather_example(config, saved_video_path, image_save_path):
             left *= 4
 
             face = frame[top:bottom, left:right]
-            if i % 10 == 0:
+            if i % skip == 0:
                 cv2.imwrite(f"{image_save_path}/{dirname}/{i}.jpg", face)
                 print(f"{dirname}_{i}.jpg saved")
 
@@ -48,6 +48,8 @@ def gather_example(config, saved_video_path, image_save_path):
 
     video_capture.release()
     cv2.destroyAllWindows()
+
+    return face_encodings
 
 
 def extract_image_name(basepath, file):
@@ -65,5 +67,6 @@ def copy_images_to_dir(imagepathlist, target_dir):
         filename = os.path.basename(imagepath)
         shutil.copy(imagepath, os.path.join(target_dir, filename))
 
+
 if __name__ == "__main__":
-    gather_example("../config/config.json", "../video/dami.mp4", "../image")
+    gather_example("../config/config.json", "../video/faketest2.mp4", "../image", skip=10)
