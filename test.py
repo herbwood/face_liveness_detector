@@ -38,13 +38,19 @@ def logTest(config):
         else:
             fake_unknown_cnt += 1
 
+
+
     print(f"          |    real   |     fake    |   total     |")
     print(f"| known   | {real_known_cnt}({round(real_known_cnt / total, 2)}) |   {fake_known_cnt}({round(fake_known_cnt/total, 2)})  | {real_known_cnt + fake_known_cnt}({round((real_known_cnt + fake_known_cnt)/total, 2)})   |")
     print(f"| unknown | {real_unknown_cnt}({round(real_unknown_cnt/total, 2)})   |   {fake_unknown_cnt}({round(fake_unknown_cnt/total, 2)})   |  {real_unknown_cnt + fake_unknown_cnt}({round((real_unknown_cnt + fake_unknown_cnt)/total, 2)})   |")
     print(f"| total   | {real_known_cnt + real_unknown_cnt}({round((real_known_cnt + real_unknown_cnt)/total, 2)})  |    {fake_known_cnt + fake_unknown_cnt}({round((fake_known_cnt + fake_unknown_cnt)/total, 2)})  | {total}(1)      |")
 
+    if round(real_known_cnt / total, 2) >= 0.65:
+        return "accept"
+    return "denied"
+
 
 if __name__ == "__main__":
     dataloader = DataLoader(config="config/config.json")
     # test(dataloader)
-    logTest("config/logs_19_06_31.log")
+    logTest("config/logs_2020_09_29_11_13_09.log")
