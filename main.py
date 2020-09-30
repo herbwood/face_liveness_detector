@@ -26,7 +26,7 @@ def main():
     video_capture = cv2.VideoCapture(config["video2read"])
 
     # save test images per frame
-    now = datetime.now().strftime("%H_%M_%S")
+    now = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
     os.mkdir(os.path.join("image", "frame", now))
     logger = resultLogger(os.path.join(config["logpath"], ("logs_" + now)) + ".log")
     i = 0
@@ -48,7 +48,7 @@ def main():
             face_names = []
             for face_encoding in face_encodings:
                 matches = fr.compare_faces(known_face_encodings,
-                                           face_encoding, tolerance=0.45)  # Compare a list of face encodings against a candidate encoding to see if they match.
+                                           face_encoding, tolerance=0.43)  # Compare a list of face encodings against a candidate encoding to see if they match.
                 # tolerance: How much distance between faces to consider it a match. Lower is more strict. 0.6 is typical best performance.
                 name = "Unknown"
 
@@ -63,7 +63,6 @@ def main():
                 face_names.append(name)
 
         process_this_frame = not process_this_frame
-
 
         for (top, right, bottom, left), name in zip(face_locations, face_names):
             top *= 4
@@ -94,7 +93,7 @@ def main():
             cv2.rectangle(frame, (left, top), (right, bottom), rectcolor, 2)
             cv2.rectangle(frame, (left, bottom - 35), (right, bottom), rectcolor, cv2.FILLED)
             font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(frame, f"{name}/{label}", (left + 6, bottom - 6), font, 1.0, (0, 0, 0), 1)
+            cv2.putText(frame, f"{name}/{label}", (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
             cv2.imwrite(f"image/frame/{now}/test_{i}_{name}_{label}_{max(preds)}.jpg", frame)
             logger.info(f"{name} {label} {max(preds)} {size[0]} {size[1]} {size[2]}")
 
