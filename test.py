@@ -23,29 +23,31 @@ def logTest(config):
         logs = f.readlines()
 
     total = len(logs)
-    real_known_cnt, real_unknown_cnt,  fake_known_cnt, fake_unknown_cnt = 0, 0, 0, 0
+    rkc, ruc, fkc, fuc = 0, 0, 0, 0
 
     for log in logs:
         log = log.strip()
         name, label, prob, width, height, channel = log.split()[2:]
 
         if name != "Unknown" and label == "real":
-            real_known_cnt += 1
+            rkc += 1
         elif name == "Unknown" and label == "real":
-            real_unknown_cnt += 1
+            ruc += 1
         elif name != "Unknown" and label == "fake":
-            fake_known_cnt += 1
+            fkc += 1
         else:
-            fake_unknown_cnt += 1
+            fuc += 1
 
 
-
-    print(f"          |    real   |     fake    |   total     |")
-    print(f"| known   | {real_known_cnt}({round(real_known_cnt / total, 2)}) |   {fake_known_cnt}({round(fake_known_cnt/total, 2)})  | {real_known_cnt + fake_known_cnt}({round((real_known_cnt + fake_known_cnt)/total, 2)})   |")
-    print(f"| unknown | {real_unknown_cnt}({round(real_unknown_cnt/total, 2)})   |   {fake_unknown_cnt}({round(fake_unknown_cnt/total, 2)})   |  {real_unknown_cnt + fake_unknown_cnt}({round((real_unknown_cnt + fake_unknown_cnt)/total, 2)})   |")
-    print(f"| total   | {real_known_cnt + real_unknown_cnt}({round((real_known_cnt + real_unknown_cnt)/total, 2)})  |    {fake_known_cnt + fake_unknown_cnt}({round((fake_known_cnt + fake_unknown_cnt)/total, 2)})  | {total}(1)      |")
-
-    if round(real_known_cnt / total, 2) >= 0.65:
+    print("{:^12}|{:^12}|{:^12}|{:^12}|".format("", "real", "fake", "total"))
+    print("{:^12}|{:^12}|{:^12}|{:^12}|".format("known", f"{rkc}({round(rkc / total, 2)})",
+                                                f"{fkc}({round(fkc/total, 2)})", f"{rkc + fkc}({round((rkc + fkc)/total, 2)})"))
+    print("{:^12}|{:^12}|{:^12}|{:^12}|".format("unknown", f"{ruc}({round(ruc / total, 2)})",
+                                                f"{fuc}({round(fuc/total, 2)})", f"{ruc + fuc}({round((ruc + fuc)/total, 2)})"))
+    print("{:^12}|{:^12}|{:^12}|{:^12}|".format("total", f"{rkc + ruc}({round((rkc + ruc)/total, 2)})",
+                                                f"{fkc + fuc}({round((fkc + fuc)/total, 2)})", f"{total}({round((ruc + fuc + rkc + fkc)/total, 2)})"))
+    
+    if round(rkc / total, 2) >= 0.65:
         return "accept"
     return "denied"
 
