@@ -84,6 +84,12 @@ def face_liveness_detector(updated_phone_number):
     filename = updated_phone_number + ".mp4"
     filepath = os.path.join("video", "Login", filename)
     video_capture = cv2.VideoCapture(filepath)
+    w, h = video_capture.get(3), video_capture.get(4)
+
+    if h == w:
+        angle = cv2.ROTATE_90_CLOCKWISE
+    else:
+        angle = cv2.ROTATE_90_COUNTERCLOCKWISE
 
     # save test images per frame
     now = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
@@ -93,7 +99,8 @@ def face_liveness_detector(updated_phone_number):
 
     while True:
         ret, frame = video_capture.read()
-        frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
+        # frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
+        frame = cv2.rotate(frame, angle)
         if ret == False:
             break
 
@@ -150,7 +157,6 @@ def face_liveness_detector(updated_phone_number):
     logfile = os.path.join(config["logpath"], ("logs_" + now)) + ".log"
 
     return logfile, updated_phone_number
-
 
 def logTest(config, updated_phone_number):
     with open(config) as f:
