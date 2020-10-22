@@ -18,12 +18,18 @@ def main():
     width, height, _ = hyperparameters["size"]
     model = load_model(config["best_saved_model"])
     le = config["le"]["classes"]
-#############################################################
+##############################################################
 
     fv = FaceVerification("config/config.json")
     known_face_encodings, known_face_names, face_locations, face_encodings, face_names, process_this_frame = fv.face_information()
 
     video_capture = cv2.VideoCapture(config["video2read"])
+    w, h = video_capture.get(3), video_capture.get(4)
+
+    if h == w:
+        angle = cv2.ROTATE_90_CLOCKWISE
+    else:
+        angle = cv2.ROTATE_90_COUNTERCLOCKWISE
 
     # save test images per frame
     now = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
@@ -33,8 +39,11 @@ def main():
 
     while True:
         ret, frame = video_capture.read()
+
         if ret == False:
             break
+
+        frame = cv2.rotate(frame, angle)
 
         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
         rgb_small_frame = small_frame[:, :, ::-1]  # BGR을 RGB로 변환
