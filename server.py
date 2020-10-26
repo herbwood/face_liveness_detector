@@ -35,6 +35,13 @@ def face_gatherer(configfile, updated_phone_number):
     filepath = os.path.join("video", "Register", filename)
     video_capture = cv2.VideoCapture(filepath)
 
+    w, h = video_capture.get(3), video_capture.get(4)
+
+    if h == w:
+        angle = cv2.ROTATE_90_CLOCKWISE
+    else:
+        angle = cv2.ROTATE_90_COUNTERCLOCKWISE
+
     if updated_phone_number not in os.listdir("image"):
         os.mkdir(os.path.join("image", updated_phone_number))
 
@@ -42,7 +49,7 @@ def face_gatherer(configfile, updated_phone_number):
 
     while True:
         ret, frame = video_capture.read()
-        frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
+        frame = cv2.rotate(frame, angle)
         if ret == False:
             break
 
@@ -195,6 +202,8 @@ def stream_handler(message):
     print(message["path"]) # /-K7yGTTEp7O549EzTYtI
     print(message["data"]) # {'title': 'Pyrebase', "body": "etc..."}
 
+    #
+
     try:
         if message["data"].startswith("com.google.android.gms.tasks.zzu@"):
             updated_phone_number = message['path'].split('/')[1]
@@ -204,14 +213,16 @@ def stream_handler(message):
 
             if state == "loginUrl":
                 storage.child(f"Login/{updated_phone_number}").download(f"./video/Login/{updated_phone_number}.mp4")
-                print("Downloaded")
+                print("Login video Downloaded")
                 logfile, updated_phone_number = face_liveness_detector(updated_phone_number)
                 result = logTest(logfile, updated_phone_number)
                 print(result)
+                f = open("config/result.txt", 'w')
+                f.write(result)
 
             elif state == "url":
                 storage.child(f"Register/{updated_phone_number}").download(f"./video/Register/{updated_phone_number}.mp4")
-                print("Downloaded")
+                print("Register video Downloaded")
                 face_gatherer("config/config.json", updated_phone_number)
                 print("Face Cropped")
 
@@ -224,5 +235,12 @@ app = Flask(__name__)
 def main():
     my_stream = db.child("UserList").stream(stream_handler)
 
+@app.route('/mobile', methods=['GET','POST'])
+def mobile():
+    f = open("config/result.txt", 'r')
+    result = f.read()
+    return result
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", debug=True)
