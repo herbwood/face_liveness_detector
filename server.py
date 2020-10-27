@@ -10,6 +10,7 @@ from datetime import datetime
 import os
 from utils.utils import configInfo
 import numpy as np
+import time
 
 config = configInfo("config/config.json")
 config = config["firebase_config"]
@@ -198,6 +199,7 @@ def logTest(config, updated_phone_number):
 
 
 def stream_handler(message):
+    stream_handler.var = None
     print(message["event"]) # put
     print(message["path"]) # /-K7yGTTEp7O549EzTYtI
     print(message["data"]) # {'title': 'Pyrebase', "body": "etc..."}
@@ -219,6 +221,9 @@ def stream_handler(message):
                 print(result)
                 f = open("config/result.txt", 'w')
                 f.write(result)
+                stream_handler.var = result
+
+
 
             elif state == "url":
                 storage.child(f"Register/{updated_phone_number}").download(f"./video/Register/{updated_phone_number}.mp4")
@@ -235,10 +240,20 @@ app = Flask(__name__)
 def main():
     my_stream = db.child("UserList").stream(stream_handler)
 
+    return "OK"
+
+
 @app.route('/mobile', methods=['GET','POST'])
 def mobile():
-    f = open("config/result.txt", 'r')
-    result = f.read()
+    # time.sleep(30)
+    # return stream_handler.var
+    while True:
+        if stream_handler.var:
+            result = stream_handler.var
+            break
+        else:
+            continue
+    stream_handler.var = None
     return result
 
 
