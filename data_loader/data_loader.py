@@ -15,7 +15,7 @@ class DataLoader:
         # train_dir = "../dataset/face_liveness_train"
         # validation_dir = "../dataset/face_liveness_validation"
 
-        self.train_datagen = ImageDataGenerator()
+        self.train_datagen = ImageDataGenerator(brightness_range=[0.2, 1.0])
 
         self.validation_datagen = ImageDataGenerator()
 
@@ -34,7 +34,6 @@ class DataLoader:
                                                                       shuffle=False)
 
         self.labels = self.train_generator.class_indices
-
 
 
     def data_generator(self):
