@@ -10,7 +10,6 @@ from datetime import datetime
 import os
 from utils.utils import configInfo
 import numpy as np
-import time
 
 config = configInfo("config/config.json")
 config = config["firebase_config"]
@@ -166,6 +165,7 @@ def face_liveness_detector(updated_phone_number):
 
     return logfile, updated_phone_number
 
+
 def logTest(config, updated_phone_number):
     with open(config) as f:
         logs = f.readlines()
@@ -204,14 +204,10 @@ def stream_handler(message):
     print(message["path"]) # /-K7yGTTEp7O549EzTYtI
     print(message["data"]) # {'title': 'Pyrebase', "body": "etc..."}
 
-    #
-
     try:
         if message["data"].startswith("com.google.android.gms.tasks.zzu@"):
             updated_phone_number = message['path'].split('/')[1]
             state = message["path"].split('/')[2]
-
-            print(updated_phone_number, state)
 
             if state == "loginUrl":
                 storage.child(f"Login/{updated_phone_number}").download(f"./video/Login/{updated_phone_number}.mp4")
@@ -219,11 +215,7 @@ def stream_handler(message):
                 logfile, updated_phone_number = face_liveness_detector(updated_phone_number)
                 result = logTest(logfile, updated_phone_number)
                 print(result)
-                f = open("config/result.txt", 'w')
-                f.write(result)
                 stream_handler.var = result
-
-
 
             elif state == "url":
                 storage.child(f"Register/{updated_phone_number}").download(f"./video/Register/{updated_phone_number}.mp4")
@@ -245,8 +237,6 @@ def main():
 
 @app.route('/mobile', methods=['GET','POST'])
 def mobile():
-    # time.sleep(30)
-    # return stream_handler.var
     while True:
         if stream_handler.var:
             result = stream_handler.var
@@ -254,6 +244,7 @@ def mobile():
         else:
             continue
     stream_handler.var = None
+
     return result
 
 
